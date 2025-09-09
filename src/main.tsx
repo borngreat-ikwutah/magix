@@ -1,24 +1,35 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Buffer } from 'buffer'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { WagmiProvider } from "wagmi";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-import App from './App.tsx'
-import { config } from './wagmi.ts'
+// import App from './routes/index.tsx'
+import { config } from "./wagmi.ts";
 
-import './index.css'
+import "./index.css";
 
-globalThis.Buffer = Buffer
+// Import the generated route tree
+import { routeTree } from "./routeTree.gen";
 
-const queryClient = new QueryClient()
+// Create a new router instance
+const router = createRouter({ routeTree });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+const queryClient = new QueryClient();
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </WagmiProvider>
   </React.StrictMode>,
-)
+);
