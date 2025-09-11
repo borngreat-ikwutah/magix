@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -12,7 +12,6 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
  * with automated fund locking, release, and refund mechanisms
  */
 contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
-
     // Platform fee: 2% (200 basis points out of 10000)
     uint256 public constant PLATFORM_FEE_BPS = 200;
     uint256 public constant SUCCESS_FEE_BPS = 50; // 0.5% success fee
@@ -20,10 +19,10 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
 
     // Campaign states
     enum CampaignState {
-        Active,      // Campaign is accepting contributions
-        Successful,  // Goal reached, funds can be withdrawn
-        Failed,      // Deadline passed without reaching goal
-        Withdrawn    // Creator has withdrawn funds
+        Active, // Campaign is accepting contributions
+        Successful, // Goal reached, funds can be withdrawn
+        Failed, // Deadline passed without reaching goal
+        Withdrawn // Creator has withdrawn funds
     }
 
     // Campaign structure
@@ -137,7 +136,10 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         require(bytes(_title).length > 0, "Title cannot be empty");
         require(bytes(_description).length > 0, "Description cannot be empty");
         require(_goalAmount > 0, "Goal amount must be greater than 0");
-        require(_durationDays > 0 && _durationDays <= 365, "Duration must be 1-365 days");
+        require(
+            _durationDays > 0 && _durationDays <= 365,
+            "Duration must be 1-365 days"
+        );
 
         uint256 campaignId = _campaignIdCounter;
         uint256 deadline = block.timestamp + (_durationDays * 1 days);
@@ -161,7 +163,13 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         _campaignIdCounter++;
         totalCampaigns++;
 
-        emit CampaignCreated(campaignId, msg.sender, _title, _goalAmount, deadline);
+        emit CampaignCreated(
+            campaignId,
+            msg.sender,
+            _title,
+            _goalAmount,
+            deadline
+        );
 
         return campaignId;
     }
@@ -170,19 +178,24 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
      * @dev Contribute to a campaign
      * @param _campaignId ID of the campaign to contribute to
      */
-    function contribute(uint256 _campaignId)
-        external
-        payable
-        campaignExists(_campaignId)
-        nonReentrant
-        whenNotPaused
-    {
+    function contribute(
+        uint256 _campaignId
+    ) external payable campaignExists(_campaignId) nonReentrant whenNotPaused {
         require(msg.value > 0, "Contribution must be greater than 0");
 
         Campaign storage campaign = campaigns[_campaignId];
-        require(campaign.state == CampaignState.Active, "Campaign is not active");
-        require(block.timestamp < campaign.deadline, "Campaign deadline has passed");
-        require(msg.sender != campaign.creator, "Creator cannot contribute to own campaign");
+        require(
+            campaign.state == CampaignState.Active,
+            "Campaign is not active"
+        );
+        require(
+            block.timestamp < campaign.deadline,
+            "Campaign deadline has passed"
+        );
+        require(
+            msg.sender != campaign.creator,
+            "Creator cannot contribute to own campaign"
+        );
 
         // Track contribution
         if (contributorAmounts[_campaignId][msg.sender] == 0) {
@@ -204,14 +217,21 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
             emit CampaignStateChanged(_campaignId, CampaignState.Successful);
         }
 
-        emit Contributed(_campaignId, msg.sender, msg.value, campaign.raisedAmount);
+        emit Contributed(
+            _campaignId,
+            msg.sender,
+            msg.value,
+            campaign.raisedAmount
+        );
     }
 
     /**
      * @dev Withdraw funds from a successful campaign (creator only)
      * @param _campaignId ID of the campaign to withdraw from
      */
-    function withdrawFunds(uint256 _campaignId)
+    function withdrawFunds(
+        uint256 _campaignId
+    )
         external
         campaignExists(_campaignId)
         onlyCampaignCreator(_campaignId)
@@ -221,7 +241,8 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         Campaign storage campaign = campaigns[_campaignId];
         require(
             campaign.state == CampaignState.Successful ||
-            (block.timestamp >= campaign.deadline && campaign.raisedAmount >= campaign.goalAmount),
+                (block.timestamp >= campaign.deadline &&
+                    campaign.raisedAmount >= campaign.goalAmount),
             "Campaign conditions not met for withdrawal"
         );
         require(!campaign.fundsWithdrawn, "Funds already withdrawn");
@@ -246,7 +267,12 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         (bool success, ) = campaign.creator.call{value: creatorAmount}("");
         require(success, "Transfer to creator failed");
 
-        emit FundsReleased(_campaignId, campaign.creator, creatorAmount, platformFee);
+        emit FundsReleased(
+            _campaignId,
+            campaign.creator,
+            creatorAmount,
+            platformFee
+        );
         emit CampaignStateChanged(_campaignId, CampaignState.Withdrawn);
     }
 
@@ -254,16 +280,13 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
      * @dev Request refund from a failed campaign
      * @param _campaignId ID of the campaign to get refund from
      */
-    function requestRefund(uint256 _campaignId)
-        external
-        campaignExists(_campaignId)
-        nonReentrant
-        whenNotPaused
-    {
+    function requestRefund(
+        uint256 _campaignId
+    ) external campaignExists(_campaignId) nonReentrant whenNotPaused {
         Campaign storage campaign = campaigns[_campaignId];
         require(
             block.timestamp >= campaign.deadline &&
-            campaign.raisedAmount < campaign.goalAmount,
+                campaign.raisedAmount < campaign.goalAmount,
             "Refund conditions not met"
         );
 
@@ -279,7 +302,9 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         contributorAmounts[_campaignId][msg.sender] = 0;
 
         // Transfer refund
-        (bool success, ) = payable(msg.sender).call{value: contributedAmount}("");
+        (bool success, ) = payable(msg.sender).call{value: contributedAmount}(
+            ""
+        );
         require(success, "Refund transfer failed");
 
         emit Refunded(_campaignId, msg.sender, contributedAmount);
@@ -290,30 +315,28 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
     /**
      * @dev Get campaign details
      */
-    function getCampaign(uint256 _campaignId)
-        external
-        view
-        campaignExists(_campaignId)
-        returns (Campaign memory)
-    {
+    function getCampaign(
+        uint256 _campaignId
+    ) external view campaignExists(_campaignId) returns (Campaign memory) {
         return campaigns[_campaignId];
     }
 
     /**
      * @dev Get contribution amount for a specific contributor and campaign
      */
-    function getContribution(uint256 _campaignId, address _contributor)
-        external
-        view
-        returns (uint256)
-    {
+    function getContribution(
+        uint256 _campaignId,
+        address _contributor
+    ) external view returns (uint256) {
         return contributorAmounts[_campaignId][_contributor];
     }
 
     /**
      * @dev Get all contributions for a campaign
      */
-    function getCampaignContributions(uint256 _campaignId)
+    function getCampaignContributions(
+        uint256 _campaignId
+    )
         external
         view
         campaignExists(_campaignId)
@@ -325,40 +348,32 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
     /**
      * @dev Get campaigns created by a specific address
      */
-    function getCreatorCampaigns(address _creator)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getCreatorCampaigns(
+        address _creator
+    ) external view returns (uint256[] memory) {
         return creatorCampaigns[_creator];
     }
 
     /**
      * @dev Get campaigns contributed to by a specific address
      */
-    function getContributorCampaigns(address _contributor)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getContributorCampaigns(
+        address _contributor
+    ) external view returns (uint256[] memory) {
         return contributorCampaigns[_contributor];
     }
 
     /**
      * @dev Check if campaign is eligible for refund
      */
-    function isEligibleForRefund(uint256 _campaignId, address _contributor)
-        external
-        view
-        campaignExists(_campaignId)
-        returns (bool)
-    {
+    function isEligibleForRefund(
+        uint256 _campaignId,
+        address _contributor
+    ) external view campaignExists(_campaignId) returns (bool) {
         Campaign memory campaign = campaigns[_campaignId];
-        return (
-            block.timestamp >= campaign.deadline &&
+        return (block.timestamp >= campaign.deadline &&
             campaign.raisedAmount < campaign.goalAmount &&
-            contributorAmounts[_campaignId][_contributor] > 0
-        );
+            contributorAmounts[_campaignId][_contributor] > 0);
     }
 
     // Owner functions

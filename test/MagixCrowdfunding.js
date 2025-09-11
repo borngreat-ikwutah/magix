@@ -1,10 +1,11 @@
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import {
   time,
   loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { expect } from "chai";
-import hre from "hardhat";
+} from "@nomicfoundation/hardhat-toolbox/network-helpers.js";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs.js";
+import chai from "chai";
+
+const { expect } = chai;
 
 describe("Lock", function () {
   // We define a fixture to reuse the same setup in every test.
@@ -18,9 +19,9 @@ describe("Lock", function () {
     const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
 
     // Contracts are deployed using the first signer/account by default
-    const [owner, otherAccount] = await hre.ethers.getSigners();
+    const [owner, otherAccount] = await ethers.getSigners();
 
-    const Lock = await hre.ethers.getContractFactory("Lock");
+    const Lock = await ethers.getContractFactory("Lock");
     const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
 
     return { lock, unlockTime, lockedAmount, owner, otherAccount };
@@ -41,20 +42,20 @@ describe("Lock", function () {
 
     it("Should receive and store the funds to lock", async function () {
       const { lock, lockedAmount } = await loadFixture(
-        deployOneYearLockFixture,
+        deployOneYearLockFixture
       );
 
-      expect(await hre.ethers.provider.getBalance(lock.target)).to.equal(
-        lockedAmount,
+      expect(await ethers.provider.getBalance(lock.target)).to.equal(
+        lockedAmount
       );
     });
 
     it("Should fail if the unlockTime is not in the future", async function () {
       // We don't use the fixture here because we want a different deployment
       const latestTime = await time.latest();
-      const Lock = await hre.ethers.getContractFactory("Lock");
+      const Lock = await ethers.getContractFactory("Lock");
       await expect(Lock.deploy(latestTime, { value: 1 })).to.be.revertedWith(
-        "Unlock time should be in the future",
+        "Unlock time should be in the future"
       );
     });
   });
@@ -65,13 +66,13 @@ describe("Lock", function () {
         const { lock } = await loadFixture(deployOneYearLockFixture);
 
         await expect(lock.withdraw()).to.be.revertedWith(
-          "You can't withdraw yet",
+          "You can't withdraw yet"
         );
       });
 
       it("Should revert with the right error if called from another account", async function () {
         const { lock, unlockTime, otherAccount } = await loadFixture(
-          deployOneYearLockFixture,
+          deployOneYearLockFixture
         );
 
         // We can increase the time in Hardhat Network
@@ -79,13 +80,13 @@ describe("Lock", function () {
 
         // We use lock.connect() to send a transaction from another account
         await expect(lock.connect(otherAccount).withdraw()).to.be.revertedWith(
-          "You aren't the owner",
+          "You aren't the owner"
         );
       });
 
       it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
         const { lock, unlockTime } = await loadFixture(
-          deployOneYearLockFixture,
+          deployOneYearLockFixture
         );
 
         // Transactions are sent using the first signer by default
@@ -98,7 +99,7 @@ describe("Lock", function () {
     describe("Events", function () {
       it("Should emit an event on withdrawals", async function () {
         const { lock, unlockTime, lockedAmount } = await loadFixture(
-          deployOneYearLockFixture,
+          deployOneYearLockFixture
         );
 
         await time.increaseTo(unlockTime);
@@ -112,14 +113,14 @@ describe("Lock", function () {
     describe("Transfers", function () {
       it("Should transfer the funds to the owner", async function () {
         const { lock, unlockTime, lockedAmount, owner } = await loadFixture(
-          deployOneYearLockFixture,
+          deployOneYearLockFixture
         );
 
         await time.increaseTo(unlockTime);
 
         await expect(lock.withdraw()).to.changeEtherBalances(
           [owner, lock],
-          [lockedAmount, -lockedAmount],
+          [lockedAmount, -lockedAmount]
         );
       });
     });

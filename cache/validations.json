@@ -1,0 +1,443 @@
+{
+  "version": "3.4",
+  "log": [
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Pausable.sol:Pausable": {
+        "src": "@openzeppelin/contracts/utils/Pausable.sol:17",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "paused()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "_paused",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/utils/Pausable.sol:18"
+            }
+          ],
+          "types": {
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard": {
+        "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:25",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:47"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:40"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/magix.sol:MagixCrowdfunding": {
+        "src": "contracts/magix.sol:14",
+        "version": {
+          "withMetadata": "336eb64b4a951888b37cb0240f9a190c3f9744c838b008ebc48f9006a2f9df10",
+          "withoutMetadata": "c46335bf511681af0c3a1e3ac2d6d5321cf8d6b8d59966cabe5014292f839908",
+          "linkedWithoutMetadata": "c46335bf511681af0c3a1e3ac2d6d5321cf8d6b8d59966cabe5014292f839908"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/utils/Pausable.sol:Pausable",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context",
+          "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard"
+        ],
+        "libraries": [],
+        "methods": [
+          "()",
+          "createCampaign(string,string,string,uint256,uint256)",
+          "contribute(uint256)",
+          "withdrawFunds(uint256)",
+          "requestRefund(uint256)",
+          "getCampaign(uint256)",
+          "getContribution(uint256,address)",
+          "getCampaignContributions(uint256)",
+          "getCreatorCampaigns(address)",
+          "getContributorCampaigns(address)",
+          "isEligibleForRefund(uint256,address)",
+          "withdrawPlatformFees()",
+          "emergencyWithdraw()",
+          "pause()",
+          "unpause()",
+          "()",
+          "()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "MagixCrowdfunding",
+            "src": "contracts/magix.sol:114"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:40"
+            },
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "_paused",
+              "offset": 20,
+              "slot": "1",
+              "type": "t_bool",
+              "contract": "Pausable",
+              "src": "@openzeppelin/contracts/utils/Pausable.sol:18"
+            },
+            {
+              "label": "_campaignIdCounter",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:52"
+            },
+            {
+              "label": "totalCampaigns",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:53"
+            },
+            {
+              "label": "totalRaised",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_uint256",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:54"
+            },
+            {
+              "label": "platformFeesCollected",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint256",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:55"
+            },
+            {
+              "label": "campaigns",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_mapping(t_uint256,t_struct(Campaign)406_storage)",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:58"
+            },
+            {
+              "label": "campaignContributions",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_uint256,t_array(t_struct(Contribution)413_storage)dyn_storage)",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:59"
+            },
+            {
+              "label": "contributorAmounts",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:60"
+            },
+            {
+              "label": "creatorCampaigns",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:61"
+            },
+            {
+              "label": "contributorCampaigns",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)",
+              "contract": "MagixCrowdfunding",
+              "src": "contracts/magix.sol:62"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_address_payable": {
+              "label": "address payable",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_struct(Contribution)413_storage)dyn_storage": {
+              "label": "struct MagixCrowdfunding.Contribution[]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_enum(CampaignState)380": {
+              "label": "enum MagixCrowdfunding.CampaignState",
+              "members": [
+                "Active",
+                "Successful",
+                "Failed",
+                "Withdrawn"
+              ],
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+              "label": "mapping(address => uint256[])",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_array(t_struct(Contribution)413_storage)dyn_storage)": {
+              "label": "mapping(uint256 => struct MagixCrowdfunding.Contribution[])",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(uint256 => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_struct(Campaign)406_storage)": {
+              "label": "mapping(uint256 => struct MagixCrowdfunding.Campaign)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Campaign)406_storage": {
+              "label": "struct MagixCrowdfunding.Campaign",
+              "members": [
+                {
+                  "label": "id",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "creator",
+                  "type": "t_address_payable",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "title",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "description",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "imageUrl",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "4"
+                },
+                {
+                  "label": "goalAmount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "5"
+                },
+                {
+                  "label": "raisedAmount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "6"
+                },
+                {
+                  "label": "deadline",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "7"
+                },
+                {
+                  "label": "createdAt",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "8"
+                },
+                {
+                  "label": "state",
+                  "type": "t_enum(CampaignState)380",
+                  "offset": 0,
+                  "slot": "9"
+                },
+                {
+                  "label": "fundsWithdrawn",
+                  "type": "t_bool",
+                  "offset": 1,
+                  "slot": "9"
+                },
+                {
+                  "label": "contributorCount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "10"
+                }
+              ],
+              "numberOfBytes": "352"
+            },
+            "t_struct(Contribution)413_storage": {
+              "label": "struct MagixCrowdfunding.Contribution",
+              "members": [
+                {
+                  "label": "contributor",
+                  "type": "t_address",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                }
+              ],
+              "numberOfBytes": "96"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      }
+    }
+  ]
+}

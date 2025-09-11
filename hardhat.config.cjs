@@ -1,12 +1,12 @@
-import type { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+require("@nomicfoundation/hardhat-toolbox");
 
 require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config();
 
-const flowWalletPrivateKey = process.env.FLOW_WALLET_PRIVATE_KEY as string;
+const flowWalletPrivateKey = process.env.FLOW_WALLET_PRIVATE_KEY;
 
-const config: HardhatUserConfig = {
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
   solidity: "0.8.28",
   networks: {
     flow: {
@@ -19,5 +19,3 @@ const config: HardhatUserConfig = {
     },
   },
 };
-
-export default config;
