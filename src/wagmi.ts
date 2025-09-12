@@ -1,22 +1,21 @@
-import { createConfig, http } from 'wagmi'
-import { mainnet, sepolia } from 'wagmi/chains'
-import { baseAccount, injected, walletConnect } from 'wagmi/connectors'
+import { createConfig, http } from "wagmi";
+import { mainnet, sepolia, flowTestnet } from "wagmi/chains";
+import { baseAccount, injected, walletConnect } from "wagmi/connectors";
 
 export const config = createConfig({
-  chains: [mainnet, sepolia],
+  chains: [flowTestnet],
   connectors: [
     injected(),
     baseAccount(),
     walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
   ],
   transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
+    [flowTestnet.id]: http(),
   },
-})
+});
 
-declare module 'wagmi' {
+declare module "wagmi" {
   interface Register {
-    config: typeof config
+    config: typeof config;
   }
 }
