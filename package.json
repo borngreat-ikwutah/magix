@@ -7,13 +7,14 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "compile": "bun hardhat compile",
+    "hardhat:compile": "bun hardhat compile",
     "test": "bun hardhat test",
-    "test:magix": "bun hardhat test test/MagixCrowdfunding.js",
-    "test:watch": "bun hardhat test --watch",
-    "deploy:local": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js --network hardhat",
-    "deploy:flow-testnet": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js --network flow",
-    "deploy:flow-mainnet": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js --network flowTestnet"
+    "start:hardhat": "hardhat node",
+    "test:flow-testnet": "hardhat test test/magix.js --network flowTestnet",
+    "test:local": "hardhat test test/MagixCrowdfunding.js --network hardhat",
+    "deploy:local": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js",
+    "deploy:flow-testnet": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js --network flowTestnet",
+    "deploy:flow-mainnet": "bun hardhat ignition deploy ignition/modules/MagixCrowdfunding.js --network flow"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

@@ -239,13 +239,14 @@ contract MagixCrowdfunding is ReentrancyGuard, Ownable, Pausable {
         whenNotPaused
     {
         Campaign storage campaign = campaigns[_campaignId];
+        require(!campaign.fundsWithdrawn, "Funds already withdrawn");
         require(
             campaign.state == CampaignState.Successful ||
                 (block.timestamp >= campaign.deadline &&
                     campaign.raisedAmount >= campaign.goalAmount),
             "Campaign conditions not met for withdrawal"
         );
-        require(!campaign.fundsWithdrawn, "Funds already withdrawn");
+        // require(!campaign.fundsWithdrawn, "Funds already withdrawn");
 
         campaign.fundsWithdrawn = true;
         campaign.state = CampaignState.Withdrawn;
