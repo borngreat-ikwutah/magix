@@ -1,16 +1,14 @@
 import { useState } from "react";
+import { MobileNav } from "./mobile-nav";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  function toggleSidebar(value: boolean) {
-    setIsOpen(!value);
-  }
-
   return (
-    <div className="w-full max-sm:max-w-screen-sm">
-      {/*SIDE BAR*/}
-      <div onClick={() => toggleSidebar(isOpen)}></div>
-    </div>
+    <>
+      <div className="w-full max-sm:max-w-screen-sm"></div>
+
+      <MobileNav isOpen={isOpen} onOpenChange={() => setIsOpen(!isOpen)} />
+    </>
   );
 };
