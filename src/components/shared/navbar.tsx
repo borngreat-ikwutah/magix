@@ -6,7 +6,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <div className="w-full max-sm:max-w-screen-sm"></div>
+      <div className="w-full"></div>
 
       <MobileNav isOpen={isOpen} onOpenChange={() => setIsOpen(!isOpen)} />
     </>
