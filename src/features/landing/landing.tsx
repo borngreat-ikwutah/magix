@@ -1,3 +1,3 @@
 export const LandingPage = () => {
-  return <main></main>;
+  return <main>Welcome to Magix</main>;
 };
