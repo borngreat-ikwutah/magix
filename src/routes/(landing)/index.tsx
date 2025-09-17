@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { App } from "~/features";
 // import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { LandingPage } from "~/features/landing/landing";
 
 export const Route = createFileRoute("/(landing)/")({
-  component: LandingPage,
+  component: App,
 });
