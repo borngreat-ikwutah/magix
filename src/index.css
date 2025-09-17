@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -117,11 +119,32 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme {
+  --color-white: #fff;
+  --color-black: #000;
+  --color-yellow-55: #ffd11a;
+  --color-yellow-60: #ffd633;
+  --color-yellow-70: #ffe066;
+
+  --color-dark-08: #141414;
+  --color-dark-10: #1a1a1a;
+  --color-dark-20: #262626;
+  --color-dark-25: #333333;
+  --color-dark-40: #404040;
+
+  --color-grey-08: #7e7e81;
+  --color-grey-60: #98989a;
+  --color-grey-70: #b3b3b3;
+  --color-grey-80: #cccccc;
+  --font-sans: "Kumbh Sans", sans-serif;
+  /*--color-grey-90: #;*/
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-dark-20 text-white font-sans;
   }
 }
