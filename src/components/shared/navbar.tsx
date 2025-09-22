@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { MobileNav } from "./mobile-nav";
 import { SearchIcon } from "lucide-react";
-import { Input } from "../ui/input";
+import { useState } from "react";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { ConnectWallet } from "./connect-wallet";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,12 +22,15 @@ export const Navbar = () => {
             placeholder="Search for Projects"
           />
         </div>
-        <Button className="bg-yellow-55 text-black hover:bg-yellow-55 hover:text-black">
+        <Button
+          className="bg-yellow-55 text-black hover:bg-yellow-55 hover:text-black"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           Connect Wallet
         </Button>
       </nav>
 
-      <MobileNav isOpen={isOpen} onOpenChange={() => setIsOpen(!isOpen)} />
+      <ConnectWallet isOpen={isOpen} setIsOpen={() => setIsOpen(!isOpen)} />
     </>
   );
 };
