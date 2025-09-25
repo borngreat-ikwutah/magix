@@ -4,7 +4,7 @@ import { Navbar } from "~/components/shared/navbar";
 
 const RootLayout = () => (
   <>
-    <Navbar />
+    {/*<Navbar />*/}
     <Outlet />
     <TanStackRouterDevtools />
   </>
